@@ -1,28 +1,39 @@
 //Simulador de plazos fijos.
 
-// Definimos las variables iniciales
+function simularPlazoFijo(capitalInicial, tasaAnual, plazoMeses) {
 
-var capital = prompt("Ingrese el capital a invertir: ");
-var interes = prompt("Ingrese la tasa de interés anual: ");
-var plazo = prompt("Ingrese el plazo en meses: ");
-var interesMensual = (interes / 100) / 12;
-var totalInteres = 0;
-var totalCapital = parseFloat(capital);
+  // Validación de los parámetros de entrada
 
-// Comprobamos que los valores ingresados sean números
-
-if (isNaN(capital) || isNaN(interes) || isNaN(plazo)) {
-  alert("Ingrese valores numéricos válidos.");
-} else {
-  // Calculamos el interés y el capital final para cada mes
-
-  for (var i = 1; i <= plazo; i++) {
-    var interesMes = totalCapital * interesMensual;
-    totalInteres += interesMes;
-    totalCapital += interesMes;
+  if (isNaN(capitalInicial) || capitalInicial <= 0) {
+    return "El capital ingresado no es válido.";
+  }
+  if (isNaN(tasaAnual) || tasaAnual <= 0) {
+    return "La tasa anual ingresada no es válida.";
+  }
+  if (isNaN(plazoMeses) || plazoMeses <= 0) {
+    return "El plazo en meses ingresado no es válido.";
   }
 
-  // Mostramos los resultados
+  // Cálculo de la tasa mensual y del interés ganado
   
-  alert("Capital inicial: $" + capital + "\nTasa de interés anual: " + interes + "%\nPlazo en meses: " + plazo + "\nCapital final: $" + totalCapital.toFixed(2) + "\nIntereses ganados: $" + totalInteres.toFixed(2));
+  let tasaMensual = tasaAnual / 12;
+  let interesGanado = capitalInicial * tasaMensual * (plazoMeses / 12);
+
+  // Cálculo del monto total al vencimiento
+
+  let montoTotal = capitalInicial + interesGanado;
+
+  // Devolución del resultado formateado
+
+  return `Al vencimiento, su plazo fijo de $${capitalInicial} a una tasa del ${tasaAnual}% anual por ${plazoMeses} meses habrá generado un interés de $${interesGanado.toFixed(2)}, y el monto total será de $${montoTotal.toFixed(2)}.`;
 }
+
+// Ejemplo de uso
+
+let capital = prompt("Ingrese el capital a invertir:");
+let tasa = prompt("Ingrese la tasa anual en porcentaje:");
+let plazo = prompt("Ingrese el plazo en meses:");
+
+let resultado = simularPlazoFijo(parseFloat(capital), parseFloat(tasa), parseFloat(plazo));
+alert(resultado);
+

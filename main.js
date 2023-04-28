@@ -14,27 +14,42 @@ function simularPlazoFijo(capitalInicial, tasaAnual, plazoMeses, cantidadPeriodo
     return "El plazo en meses ingresado no es válido.";
   }
 
-
   // Cálculo de la tasa mensual y del interés ganado
 
   let tasaMensual = tasaAnual / 12 / 100;
   let interesGanado = 0;
 
-  // Cálculo del monto total al vencimiento para cada período y acumulación de los resultados
+  // Creación del array de periodos
 
-  for (let i = 1; i <= plazoMeses; i++) {
+  let periodos = Array.from({ length: plazoMeses }, (_, i) => i + 1);
+
+  // Cálculo del interés ganado en cada período
+
+  let interesesMensuales = periodos.map((periodo) => {
     let interesMensual = capitalInicial * tasaMensual;
     capitalInicial += interesMensual;
     interesGanado += interesMensual;
-    console.log(`Interés ganado en el mes ${i}: ${interesMensual.toFixed(2)}`);
-  }
+    return interesMensual.toFixed(2);
+  });
 
-  let montoTotal = capitalInicial;
-  console.log(`Monto total al vencimiento: ${montoTotal.toFixed(2)}`);
+  // Cálculo del monto total al vencimiento
+
+  let montoTotal = capitalInicial.toFixed(2);
+
+  // Creación del objeto resultado
+
+  let resultado = {
+    capitalInicial: capitalInicial.toFixed(2),
+    tasaAnual: tasaAnual,
+    plazoMeses: plazoMeses,
+    interesesMensuales: interesesMensuales,
+    interesGanado: interesGanado.toFixed(2),
+    montoTotal: montoTotal
+  };
 
   // Devolución del resultado formateado
 
-  return `Al vencimiento, su plazo fijo de $${capitalInicial.toFixed(2)} a una tasa del ${tasaAnual}% anual por ${plazoMeses} meses habrá generado un interés de $${interesGanado.toFixed(2)}, y el monto total será de $${montoTotal.toFixed(2)}.`;
+  return `Al vencimiento, su plazo fijo de $${resultado.capitalInicial} a una tasa del ${resultado.tasaAnual}% anual por ${resultado.plazoMeses} meses habrá generado un interés de $${resultado.interesGanado}, y el monto total será de $${resultado.montoTotal}. Los intereses mensuales son: ${resultado.interesesMensuales.join(", ")}.`;
 }
 
 // Ejemplo de uso
@@ -43,7 +58,7 @@ let continuar = true;
 
 while (continuar) {
   let capital = prompt("Ingrese el capital a invertir:");
-  let tasa = 78;
+  let tasa = prompt("Ingrese la tasa anual:");
   let plazo = prompt("Ingrese el plazo en meses:");
 
   let resultado = simularPlazoFijo(parseFloat(capital), parseFloat(tasa), parseFloat(plazo));
@@ -53,4 +68,3 @@ while (continuar) {
     continuar = false;
   }
 }
-
